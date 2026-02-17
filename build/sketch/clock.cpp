@@ -8,6 +8,7 @@ unsigned long referenceMillis = 0;
 constexpr size_t kCommandBufSize = 32;
 char commandBuffer[kCommandBufSize];
 size_t commandIndex = 0;
+unsigned long lastCharMillis = 0;
 
 void printPrompt() {
   Serial.println(F("Binary clock ready. Send START=HH:MM:SS to set the initial time."));
@@ -78,10 +79,15 @@ ClockTime clockCurrent() {
 }
 
 void clockHandleSerial() {
+  // Change the clock time by sending either:
+  // "HH:MM:SS"            (e.g., 12:34:56)
+  // "START=HH:MM:SS"      (e.g., START=07:00:00)
+  // Lines end with newline; hours 0-23, minutes/seconds 0-59.
   while (Serial.available()) {
     char incoming = Serial.read();
+    lastCharMillis = millis();
     if (incoming == '\r') {
-      continue;
+      incoming = '\n';  // treat CR as newline too
     }
     if (incoming == '\n') {
       commandBuffer[commandIndex] = '\0';
@@ -108,5 +114,25 @@ void clockHandleSerial() {
     } else {
       commandIndex = 0;
     }
+  }
+  // Fallback: if no newline received but input paused, process buffered line.
+  if (commandIndex > 0 && (millis() - lastCharMillis) > 250) {
+    commandBuffer[commandIndex] = '\0';
+    const char* probe = commandBuffer;
+    if (startsWithIgnoreCase(commandBuffer, "START=")) {
+      probe = commandBuffer + 6;
+    }
+    ClockTime requested;
+    if (tryParseTime(probe, requested)) {
+      currentStart = requested;
+      referenceMillis = millis();
+      char buf[16];
+      formatTimeString(currentStart, buf, sizeof(buf));
+      Serial.print(F("Start time set to "));
+      Serial.println(buf);
+    } else {
+      Serial.println(F("Invalid format. Use HH:MM:SS or START=HH:MM:SS"));
+    }
+    commandIndex = 0;
   }
 }
