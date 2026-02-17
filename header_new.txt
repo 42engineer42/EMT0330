@@ -1,0 +1,16 @@
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <stdio.h>
+
+// TANK robot binary clock for a 128x64 monochrome OLED display.
+// The clock is not tied to a RTC: it runs from the start time you set and keeps
+// counting via millis(). Send  START=HH:MM:SS (or just HH:MM:SS) over Serial to
+// change the starting point at any time.
+
+constexpr int kOledWidth = 128;
+constexpr int kOledHeight = 64;
+constexpr int kOledAddress = 0x3C;
+constexpr int kOledResetPin = -1;
+
+Adafruit_SSD1306 display(kOledWidth, kOledHeight, &Wire, kOledResetPin);

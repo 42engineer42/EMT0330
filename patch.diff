@@ -1,0 +1,76 @@
+*** Begin Patch
+*** Update File: Binary_clock/Binary_clock.ino
+@@
+-#include <Wire.h>
+-#include <U8g2lib.h>
+-#include <stdio.h>
++#include <Wire.h>
++#include <Adafruit_GFX.h>
++#include <Adafruit_SSD1306.h>
++#include <stdio.h>
+
+@@
+-// TANK robot binary clock for a 128x64 monochrome OLED display.
+-// The clock is not tied to a RTC: it runs from the start time you set and keeps
+-// counting via millis(). Send  START=HH:MM:SS (or just HH:MM:SS) over Serial to
+-// change the starting point at any time.
+-
+-U8G2_SSD1306_128X64_NONAME_F_HW_I2C display(U8G2_R0, /* reset=*/U8X8_PIN_NONE);
++// TANK robot binary clock for a 128x64 monochrome OLED display.
++// The clock is not tied to a RTC: it runs from the start time you set and keeps
++// counting via millis(). Send " START=HH:MM:SS\ (or just \HH:MM:SS\) over Serial to
++// change the starting point at any time.
++
++constexpr int kOledWidth = 128;
++constexpr int kOledHeight = 64;
++constexpr int kOledAddress = 0x3C;
++constexpr int kOledResetPin = -1;
++Adafruit_SSD1306 display(kOledWidth, kOledHeight, &Wire, kOledResetPin);
+
+@@
+-void drawBinaryRow(const char* label, uint8_t value, uint8_t bits, uint8_t y) {
+-  char binary[9];
+-  formatBinary(value, bits, binary);
+-  char lineBuffer[20];
+-  snprintf(lineBuffer, sizeof(lineBuffer), " %s %s\, label, binary);
+-  display.drawStr(0, y, lineBuffer);
+-}
++void drawBinaryRow(const char* label, uint8_t value, uint8_t bits, uint8_t y) {
++  char binary[9];
++  formatBinary(value, bits, binary);
++  display.setCursor(0, y);
++  display.print(label);
++  display.print(" \ );
++  display.print(binary);
++}
+
+@@
+-void drawDisplay(const ClockTime& now) {
+-  char timeText[16];
+-  formatTimeString(now, timeText, sizeof(timeText));
+
+-  display.clearBuffer();
+-  display.setFont(u8g2_font_ncenB14_tr);
+-  display.drawStr(0, 16, timeText);
+
+-  display.setFont(u8g2_font_6x12_tr);
+-  drawBinaryRow(" H\, now.hour, 6, 32);
+-  drawBinaryRow(" M\, now.minute, 6, 46);
+-  drawBinaryRow(" S\, now.second, 6, 60);
+
+-  display.sendBuffer();
+-}
++void drawDisplay(const ClockTime& now) {
++  char timeText[16];
++  formatTimeString(now, timeText, sizeof(timeText));
+
++  display.clearDisplay();
++  display.setTextColor(SSD1306_WHITE);
++  display.setTextSize(2);
++  display.setCursor(0, 0);
++  display.println(timeText);
+
++  display.setTextSize(1);
++  drawBinaryRow(" H\, now.hour, 6, 32);
++  drawBinaryRow(" M\, now.minute, 6, 44);
++  drawBinaryRow(" S\, now.second, 6, 56);

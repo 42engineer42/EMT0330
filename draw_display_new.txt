@@ -1,0 +1,17 @@
+void drawDisplay(const ClockTime& now) {
+  char timeText[16];
+  formatTimeString(now, timeText, sizeof(timeText));
+
+  display.clearDisplay();
+  display.setTextColor(SSD1306_WHITE);
+  display.setTextSize(2);
+  display.setCursor(0, 0);
+  display.println(timeText);
+
+  display.setTextSize(1);
+  drawBinaryRow( H, now.hour, 6, 32);
+  drawBinaryRow(M, now.minute, 6, 44);
+  drawBinaryRow(S, now.second, 6, 56);
+
+  display.display();
+}
