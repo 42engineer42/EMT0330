@@ -182,11 +182,6 @@ C:\Users\jaanr\Documents\GitHub\EMT0330\build\sketch\Binary_clock.ino.cpp.o: \
  C:\Users\jaanr\AppData\Local\Arduino15\packages\esp32-bluepad32\hardware\esp32\4.1.0\cores\esp32/Arduino.h \
  C:\Users\jaanr\AppData\Local\Arduino15\packages\esp32-bluepad32\hardware\esp32\4.1.0\libraries\Wire\src/Wire.h \
  C:\Users\jaanr\AppData\Local\Arduino15\packages\esp32-bluepad32\hardware\esp32\4.1.0\cores\esp32/esp32-hal.h \
- C:\Users\jaanr\Documents\Arduino\libraries\Adafruit_GFX_Library/Adafruit_GFX.h \
- C:\Users\jaanr\AppData\Local\Arduino15\packages\esp32-bluepad32\hardware\esp32\4.1.0\cores\esp32/Print.h \
- C:\Users\jaanr\Documents\Arduino\libraries\Adafruit_GFX_Library/gfxfont.h \
- C:\Users\jaanr\Documents\Arduino\libraries\Adafruit_BusIO/Adafruit_I2CDevice.h \
- C:\Users\jaanr\Documents\Arduino\libraries\Adafruit_BusIO/Adafruit_SPIDevice.h \
- C:\Users\jaanr\AppData\Local\Arduino15\packages\esp32-bluepad32\hardware\esp32\4.1.0\libraries\SPI\src/SPI.h \
- C:\Users\jaanr\AppData\Local\Arduino15\packages\esp32-bluepad32\hardware\esp32\4.1.0\cores\esp32/esp32-hal-spi.h \
- C:\Users\jaanr\Documents\Arduino\libraries\Adafruit_SSD1306/Adafruit_SSD1306.h
+ C:\Users\jaanr\Documents\GitHub\EMT0330\build\sketch\clock.h \
+ C:\Users\jaanr\Documents\GitHub\EMT0330\build\sketch\config.h \
+ C:\Users\jaanr\Documents\GitHub\EMT0330\build\sketch\display.h
