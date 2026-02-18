@@ -6,24 +6,24 @@
 #include "display.h"
 
 namespace {
-unsigned long lastLogMillis = 0;
+unsigned long lastLogMillis = 0;  // throttle serial heartbeat
 }
 
 void setup() {
-  Serial.begin(115200);
-  delay(2000);
-  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
-  displayInit();
-  clockInit();
+  Serial.begin(115200);      // USB serial for commands and logs
+  delay(2000);               // allow serial to open
+  Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);  // custom I2C pins
+  displayInit();             // OLED setup
+  clockInit();               // start clock at default/start time
 }
 
 void loop() {
-  clockHandleSerial();
-  ClockTime now = clockCurrent();
-  displayUpdate(now);
+  clockHandleSerial();                 // process incoming time commands
+  ClockTime now = clockCurrent();      // derive current time
+  displayUpdate(now);                  // draw to OLED
   if (millis() - lastLogMillis >= 1000UL) {
     Serial.printf("Time: %02u:%02u:%02u\n", now.hour, now.minute, now.second);
     lastLogMillis = millis();
   }
-  delay(100);
+  delay(100);  // modest refresh rate
 }

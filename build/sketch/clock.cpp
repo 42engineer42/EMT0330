@@ -3,12 +3,12 @@
 
 namespace {
 ClockTime currentStart = kDefaultStart;
-unsigned long referenceMillis = 0;
+unsigned long referenceMillis = 0;  // millis reference for currentStart
 
 constexpr size_t kCommandBufSize = 32;
 char commandBuffer[kCommandBufSize];
 size_t commandIndex = 0;
-unsigned long lastCharMillis = 0;
+unsigned long lastCharMillis = 0;     // last serial char time (for timeout flush)
 
 void printPrompt() {
   Serial.println(F("Binary clock ready. Send START=HH:MM:SS to set the initial time."));
@@ -63,7 +63,7 @@ unsigned long startSeconds() {
 }  // namespace
 
 void clockInit() {
-  referenceMillis = millis();
+  referenceMillis = millis();  // reset zero-point
   printPrompt();
 }
 
