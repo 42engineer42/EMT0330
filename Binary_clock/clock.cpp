@@ -3,6 +3,7 @@
 namespace {
 ClockTime currentStart = kDefaultStart;
 unsigned long referenceMillis = 0;  // millis reference for currentStart
+bool countForward = true;           // true: time moves forward, false: backward
 
 constexpr size_t kCommandBufSize = 32;
 char commandBuffer[kCommandBufSize];
@@ -12,6 +13,7 @@ unsigned long lastCharMillis = 0;     // last serial char time (for timeout flus
 void printPrompt() {
   Serial.println(F("Binary clock ready. Send START=HH:MM:SS to set the initial time."));
   Serial.println(F("For example: START=21:30:00"));
+  Serial.println(F("Change direction with DIR=UP or DIR=DOWN (default is UP)."));
 }
 
 void formatTimeString(const ClockTime& time, char* buffer, size_t bufferSize) {
@@ -59,6 +61,33 @@ unsigned long startSeconds() {
          static_cast<unsigned long>(currentStart.minute) * 60UL +
          currentStart.second;
 }
+
+bool equalsIgnoreCase(const char* a, const char* b) {
+  while (*a && *b) {
+    char x = *a++;
+    char y = *b++;
+    if (x >= 'A' && x <= 'Z') {
+      x += 'a' - 'A';
+    }
+    if (y >= 'A' && y <= 'Z') {
+      y += 'a' - 'A';
+    }
+    if (x != y) {
+      return false;
+    }
+  }
+  return *a == '\0' && *b == '\0';
+}
+
+void applyDirectionChange(bool forward) {
+  // Re-anchor the start time so the display doesn't jump when changing direction.
+  ClockTime snapshot = clockCurrent();
+  currentStart = snapshot;
+  referenceMillis = millis();
+  countForward = forward;
+  Serial.print(F("Direction set to "));
+  Serial.println(forward ? F("UP") : F("DOWN"));
+}
 }  // namespace
 
 void clockInit() {
@@ -68,8 +97,10 @@ void clockInit() {
 
 ClockTime clockCurrent() {
   unsigned long elapsedSeconds = (millis() - referenceMillis) / 1000UL;
-  unsigned long totalSeconds = startSeconds() + elapsedSeconds;
-  unsigned long wrapped = totalSeconds % 86400UL;
+  long signedElapsed = countForward ? static_cast<long>(elapsedSeconds)
+                                    : -static_cast<long>(elapsedSeconds);
+  long totalSeconds = static_cast<long>(startSeconds()) + signedElapsed;
+  long wrapped = ((totalSeconds % 86400L) + 86400L) % 86400L;  // keep positive
   ClockTime now;
   now.hour = (wrapped / 3600UL) % 24;
   now.minute = (wrapped / 60UL) % 60;
@@ -81,6 +112,8 @@ void clockHandleSerial() {
   // Change the clock time by sending either:
   // "HH:MM:SS"            (e.g., 12:34:56)
   // "START=HH:MM:SS"      (e.g., START=07:00:00)
+  // Change direction:
+  // "DIR=UP" or "DIR=DOWN"
   // Lines end with newline; hours 0-23, minutes/seconds 0-59.
   while (Serial.available()) {
     char incoming = Serial.read();
@@ -91,6 +124,20 @@ void clockHandleSerial() {
     if (incoming == '\n') {
       commandBuffer[commandIndex] = '\0';
       const char* probe = commandBuffer;
+      if (startsWithIgnoreCase(commandBuffer, "DIR=")) {
+        const char* dir = commandBuffer + 4;
+        if (equalsIgnoreCase(dir, "UP") || equalsIgnoreCase(dir, "FORWARD") ||
+            equalsIgnoreCase(dir, "+")) {
+          applyDirectionChange(true);
+        } else if (equalsIgnoreCase(dir, "DOWN") || equalsIgnoreCase(dir, "BACKWARD") ||
+                   equalsIgnoreCase(dir, "-")) {
+          applyDirectionChange(false);
+        } else {
+          Serial.println(F("Invalid direction. Use DIR=UP or DIR=DOWN."));
+        }
+        commandIndex = 0;
+        continue;
+      }
       if (startsWithIgnoreCase(commandBuffer, "START=")) {
         probe = commandBuffer + 6;
       }
@@ -118,6 +165,20 @@ void clockHandleSerial() {
   if (commandIndex > 0 && (millis() - lastCharMillis) > 250) {
     commandBuffer[commandIndex] = '\0';
     const char* probe = commandBuffer;
+    if (startsWithIgnoreCase(commandBuffer, "DIR=")) {
+      const char* dir = commandBuffer + 4;
+      if (equalsIgnoreCase(dir, "UP") || equalsIgnoreCase(dir, "FORWARD") ||
+          equalsIgnoreCase(dir, "+")) {
+        applyDirectionChange(true);
+      } else if (equalsIgnoreCase(dir, "DOWN") || equalsIgnoreCase(dir, "BACKWARD") ||
+                 equalsIgnoreCase(dir, "-")) {
+        applyDirectionChange(false);
+      } else {
+        Serial.println(F("Invalid direction. Use DIR=UP or DIR=DOWN."));
+      }
+      commandIndex = 0;
+      return;
+    }
     if (startsWithIgnoreCase(commandBuffer, "START=")) {
       probe = commandBuffer + 6;
     }
