@@ -5,26 +5,29 @@
 #include "clock.h"
 #include "config.h"
 #include "display.h"
+#include "xbox.h"
 
 namespace {
 unsigned long lastLogMillis = 0;  // throttle serial heartbeat
 }
 
-#line 12 "C:\\Users\\jaanr\\Documents\\GitHub\\EMT0330\\Binary_clock\\Binary_clock.ino"
+#line 13 "C:\\Users\\jaanr\\Documents\\GitHub\\EMT0330\\Binary_clock\\Binary_clock.ino"
 void setup();
-#line 20 "C:\\Users\\jaanr\\Documents\\GitHub\\EMT0330\\Binary_clock\\Binary_clock.ino"
+#line 22 "C:\\Users\\jaanr\\Documents\\GitHub\\EMT0330\\Binary_clock\\Binary_clock.ino"
 void loop();
-#line 12 "C:\\Users\\jaanr\\Documents\\GitHub\\EMT0330\\Binary_clock\\Binary_clock.ino"
+#line 13 "C:\\Users\\jaanr\\Documents\\GitHub\\EMT0330\\Binary_clock\\Binary_clock.ino"
 void setup() {
   Serial.begin(115200);      // USB serial for commands and logs
   delay(2000);               // allow serial to open
   Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);  // custom I2C pins
   displayInit();             // OLED setup
   clockInit();               // start clock at default/start time
+  xboxInit();                // enable gamepad control
 }
 
 void loop() {
   clockHandleSerial();                 // process incoming time commands
+  xboxUpdate();                        // poll controller
   ClockTime now = clockCurrent();      // derive current time
   displayUpdate(now);                  // draw to OLED
   if (millis() - lastLogMillis >= 1000UL) {

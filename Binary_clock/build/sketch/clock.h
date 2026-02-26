@@ -12,3 +12,6 @@ void clockHandleSerial();
 
 // Compute the current time based on millis() since reference start.
 ClockTime clockCurrent();
+
+// Toggle counting direction (forward/backward) and keep time continuous.
+void clockToggleDirection();

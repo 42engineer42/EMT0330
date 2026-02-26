@@ -95,6 +95,16 @@ void clockInit() {
   printPrompt();
 }
 
+void clockToggleDirection() {
+  // Freeze the display at the current moment, flip direction, then continue from there.
+  ClockTime snapshot = clockCurrent();
+  currentStart = snapshot;
+  referenceMillis = millis();
+  countForward = !countForward;
+  Serial.print(F("Direction set to "));
+  Serial.println(countForward ? F("UP") : F("DOWN"));
+}
+
 ClockTime clockCurrent() {
   unsigned long elapsedSeconds = (millis() - referenceMillis) / 1000UL;
   long signedElapsed = countForward ? static_cast<long>(elapsedSeconds)
