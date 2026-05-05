@@ -1,0 +1,1100 @@
+[
+  {
+    "id": "flow_overview",
+    "type": "tab",
+    "label": "Overview",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "flow_conveyor",
+    "type": "tab",
+    "label": "Conveyor Belt",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "flow_bending",
+    "type": "tab",
+    "label": "Bending Machine",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "mqtt_broker",
+    "type": "mqtt-broker",
+    "name": "Tanker MQTT",
+    "broker": "193.40.245.72",
+    "port": "1883",
+    "clientid": "nodered_factory_v5",
+    "autoConnect": true,
+    "usetls": false,
+    "protocolVersion": "4",
+    "keepalive": "60",
+    "cleansession": true,
+    "credentials": {
+      "user": "test",
+      "password": "test"
+    }
+  },
+  {
+    "id": "ui_tab_overview",
+    "type": "ui_tab",
+    "name": "Overview",
+    "icon": "dashboard",
+    "order": 1,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_tab_conveyor",
+    "type": "ui_tab",
+    "name": "Conveyor Belt",
+    "icon": "settings_input_component",
+    "order": 2,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_tab_bending",
+    "type": "ui_tab",
+    "name": "Bending Machine",
+    "icon": "build",
+    "order": 3,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_tab_palletising",
+    "type": "ui_tab",
+    "name": "Palletising",
+    "icon": "layers",
+    "order": 4,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_tab_cnc",
+    "type": "ui_tab",
+    "name": "CNC Machine",
+    "icon": "precision_manufacturing",
+    "order": 5,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "grp_overview",
+    "type": "ui_group",
+    "name": "Factory Overview",
+    "tab": "ui_tab_overview",
+    "order": 1,
+    "disp": false,
+    "width": "12",
+    "collapse": false
+  },
+  {
+    "id": "grp_conv_metrics",
+    "type": "ui_group",
+    "name": "Motor & Current",
+    "tab": "ui_tab_conveyor",
+    "order": 1,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "grp_conv_maint",
+    "type": "ui_group",
+    "name": "Maintenance",
+    "tab": "ui_tab_conveyor",
+    "order": 2,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "grp_conv_imu",
+    "type": "ui_group",
+    "name": "IMU & Environment",
+    "tab": "ui_tab_conveyor",
+    "order": 3,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "grp_conv_chart",
+    "type": "ui_group",
+    "name": "Current History",
+    "tab": "ui_tab_conveyor",
+    "order": 4,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "grp_conv_detail",
+    "type": "ui_group",
+    "name": "ESP32 Detail",
+    "tab": "ui_tab_conveyor",
+    "order": 5,
+    "disp": true,
+    "width": "12",
+    "collapse": false
+  },
+  {
+    "id": "grp_conv_control",
+    "type": "ui_group",
+    "name": "Control",
+    "tab": "ui_tab_conveyor",
+    "order": 6,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "grp_bend_detail",
+    "type": "ui_group",
+    "name": "Bending Machine Status",
+    "tab": "ui_tab_bending",
+    "order": 1,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "grp_bend_maint",
+    "type": "ui_group",
+    "name": "Maintenance",
+    "tab": "ui_tab_bending",
+    "order": 2,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "grp_bend_control",
+    "type": "ui_group",
+    "name": "Control",
+    "tab": "ui_tab_bending",
+    "order": 3,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "grp_pall",
+    "type": "ui_group",
+    "name": "Palletising Machine",
+    "tab": "ui_tab_palletising",
+    "order": 1,
+    "disp": true,
+    "width": "12",
+    "collapse": false
+  },
+  {
+    "id": "grp_cnc",
+    "type": "ui_group",
+    "name": "CNC Machine",
+    "tab": "ui_tab_cnc",
+    "order": 1,
+    "disp": true,
+    "width": "12",
+    "collapse": false
+  },
+  {
+    "id": "mqtt_main_ov",
+    "type": "mqtt in",
+    "z": "flow_overview",
+    "name": "Main_controller/status",
+    "topic": "Main_controller/status",
+    "qos": "1",
+    "datatype": "json",
+    "broker": "mqtt_broker",
+    "x": 160,
+    "y": 80,
+    "wires": [
+      [
+        "fn_store_main"
+      ]
+    ]
+  },
+  {
+    "id": "fn_store_main",
+    "type": "function",
+    "z": "flow_overview",
+    "name": "Store main_controller",
+    "func": "flow.set('ts_main', Date.now());\nflow.set('d_main', {\n    speed: msg.payload.speed || 0,\n    current_ma: msg.payload.current_ma || 0,\n    util_pct: msg.payload.util_pct || 0,\n    tracked_work_ms: msg.payload.tracked_work_ms || 0,\n    maintenance_required: msg.payload.maintenance_required || false,\n    machine_state: msg.payload.machine_state || 'idle'\n});\nreturn msg;",
+    "outputs": 1,
+    "x": 420,
+    "y": 80,
+    "wires": [
+      [
+        "fn_overview_agg"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt_reset1_ov",
+    "type": "mqtt in",
+    "z": "flow_overview",
+    "name": "reset_button/status",
+    "topic": "reset_button/status",
+    "qos": "1",
+    "datatype": "json",
+    "broker": "mqtt_broker",
+    "x": 160,
+    "y": 140,
+    "wires": [
+      [
+        "fn_store_reset1"
+      ]
+    ]
+  },
+  {
+    "id": "fn_store_reset1",
+    "type": "function",
+    "z": "flow_overview",
+    "name": "Store reset_button",
+    "func": "flow.set('ts_reset1', Date.now());\nflow.set('d_reset1', {\n    maintenance_required: msg.payload.maintenance_required || false,\n    machine_state: msg.payload.machine_state || 'idle'\n});\nreturn msg;",
+    "outputs": 1,
+    "x": 420,
+    "y": 140,
+    "wires": [
+      [
+        "fn_overview_agg"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt_imu_ov",
+    "type": "mqtt in",
+    "z": "flow_overview",
+    "name": "imu_controller/status",
+    "topic": "imu_controller/status",
+    "qos": "1",
+    "datatype": "json",
+    "broker": "mqtt_broker",
+    "x": 160,
+    "y": 200,
+    "wires": [
+      [
+        "fn_store_imu"
+      ]
+    ]
+  },
+  {
+    "id": "fn_store_imu",
+    "type": "function",
+    "z": "flow_overview",
+    "name": "Store imu_controller",
+    "func": "flow.set('ts_imu', Date.now());\n\nconst vib = msg.payload.vibration || {};\nconst vibMaint = vib.maintenance_required === true;\n\nflow.set('imu_vib_maintenance', vibMaint);\nflow.set('d_imu', {\n    temp_c: msg.payload.temp_c,\n    roll:  msg.payload.orientation ? msg.payload.orientation.roll  : null,\n    pitch: msg.payload.orientation ? msg.payload.orientation.pitch : null,\n    maintenance_required: vibMaint,\n    machine_state: vibMaint ? 'maintenance' : 'idle'\n});\nreturn msg;",
+    "outputs": 1,
+    "x": 420,
+    "y": 200,
+    "wires": [
+      [
+        "fn_overview_agg"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt_reset2_ov",
+    "type": "mqtt in",
+    "z": "flow_overview",
+    "name": "reset_button_2/status",
+    "topic": "reset_button_2/status",
+    "qos": "1",
+    "datatype": "json",
+    "broker": "mqtt_broker",
+    "x": 160,
+    "y": 260,
+    "wires": [
+      [
+        "fn_store_reset2"
+      ]
+    ]
+  },
+  {
+    "id": "fn_store_reset2",
+    "type": "function",
+    "z": "flow_overview",
+    "name": "Store reset_button_2",
+    "func": "flow.set('ts_reset2', Date.now());\nflow.set('d_reset2', {\n    maintenance_required: msg.payload.maintenance_required || false,\n    machine_state: msg.payload.machine_state || 'idle',\n    tracked_work_ms: msg.payload.tracked_work_ms || 0\n});\nreturn msg;",
+    "outputs": 1,
+    "x": 420,
+    "y": 260,
+    "wires": [
+      [
+        "fn_overview_agg"
+      ]
+    ]
+  },
+  {
+    "id": "ticker_ov",
+    "type": "inject",
+    "z": "flow_overview",
+    "name": "Refresh 3s",
+    "repeat": "3",
+    "once": true,
+    "onceDelay": 1,
+    "payload": "{}",
+    "payloadType": "json",
+    "x": 140,
+    "y": 340,
+    "wires": [
+      [
+        "fn_overview_agg"
+      ]
+    ]
+  },
+  {
+    "id": "fn_overview_agg",
+    "type": "function",
+    "z": "flow_overview",
+    "name": "Aggregate all machines",
+    "func": "const TIMEOUT = 10000;\nconst now = Date.now();\n\nfunction online(key) {\n    const ts = flow.get(key);\n    return !!(ts && (now - ts) < TIMEOUT);\n}\n\nfunction fmtDur(ms) {\n    if (!ms) return '00:00:00';\n    const s = Math.floor(ms / 1000);\n    const h = Math.floor(s / 3600);\n    const m = Math.floor((s % 3600) / 60);\n    const sc = s % 60;\n    return [h,m,sc].map(v=>String(v).padStart(2,'0')).join(':');\n}\n\nconst mainOn   = online('ts_main');\nconst reset1On = online('ts_reset1');\nconst imuOn    = online('ts_imu');\nconst reset2On = online('ts_reset2');\n\nconst dMain   = flow.get('d_main')   || {};\nconst dReset1 = flow.get('d_reset1') || {};\nconst dImu    = flow.get('d_imu')    || {};\nconst dReset2 = flow.get('d_reset2') || {};\n\n// Conveyor state — priority: offline > maintenance > working > idle\nfunction conveyorState() {\n    if (!mainOn && !reset1On && !imuOn) return 'offline';\n    // maintenance: motor threshold OR imu vibration latch\n    if (dMain.maintenance_required || dReset1.maintenance_required || dImu.maintenance_required) {\n        return 'maintenance';\n    }\n    if (dMain.machine_state === 'working') return 'working';\n    return 'idle';\n}\n\nfunction bendingState() {\n    if (!reset2On) return 'offline';\n    if (dReset2.maintenance_required) return 'maintenance';\n    if (dReset2.machine_state === 'working') return 'working';\n    return 'idle';\n}\n\nmsg.payload = {\n    conveyor: {\n        state: conveyorState(),\n        esps: [\n            { name: 'Main ctrl', online: mainOn },\n            { name: 'Reset btn', online: reset1On },\n            { name: 'IMU',       online: imuOn }\n        ],\n        speed:      dMain.speed || 0,\n        current_ma: dMain.current_ma ? Number(dMain.current_ma).toFixed(0) : '—',\n        util_pct:   dMain.util_pct   ? Number(dMain.util_pct).toFixed(1)   : '—',\n        tracked:    fmtDur(dMain.tracked_work_ms),\n        temp_c:     dImu.temp_c != null ? Number(dImu.temp_c).toFixed(1) : '—',\n        roll:       dImu.roll   != null ? Number(dImu.roll).toFixed(1)   : '—'\n    },\n    bending: {\n        state: bendingState(),\n        esps: [ { name: 'Reset btn', online: reset2On } ],\n        tracked: fmtDur(dReset2.tracked_work_ms)\n    },\n    palletising: { state: 'offline', esps: [] },\n    cnc:         { state: 'offline', esps: [] }\n};\n\nreturn msg;\n",
+    "outputs": 1,
+    "x": 660,
+    "y": 200,
+    "wires": [
+      [
+        "tmpl_overview"
+      ]
+    ]
+  },
+  {
+    "id": "tmpl_overview",
+    "type": "ui_template",
+    "z": "flow_overview",
+    "group": "grp_overview",
+    "name": "Overview Cards",
+    "order": 1,
+    "width": "12",
+    "height": "5",
+    "format": "<style>\n.ov{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:8px 0}\n.mc{border-radius:14px;border:0.5px solid rgba(128,128,128,0.18);background:var(--color-background-primary,#fff);overflow:hidden;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;padding:24px 16px 20px}\n.sq{width:120px;height:120px;border-radius:16px;cursor:pointer;transition:transform .12s,opacity .12s;display:flex;align-items:center;justify-content:center;text-decoration:none;margin-bottom:16px}\n.sq:hover{transform:scale(0.96);opacity:.9}\n.sq svg{width:48px;height:48px;opacity:0.75}\n.sq-working{background:#3B6D11}\n.sq-idle{background:#BA7517}\n.sq-maintenance{background:#A32D2D}\n.sq-offline{background:#5F5E5A}\n.mc-name{font-size:15px;font-weight:600;color:var(--color-text-primary,#111);margin-bottom:5px;text-align:center}\n.mc-state{font-size:12px;font-weight:600;letter-spacing:.07em;text-align:center}\n.st-working{color:#3B6D11}.st-idle{color:#854F0B}.st-maintenance{color:#A32D2D}.st-offline{color:#888}\n</style>\n\n<div class=\"ov\" ng-if=\"msg.payload\">\n\n  <div class=\"mc\">\n    <a class=\"sq\" ng-class=\"'sq-'+msg.payload.conveyor.state\" href=\"#!/Conveyor Belt\">\n      <svg viewBox=\"0 0 24 24\" fill=\"white\"><path d=\"M21 16H3a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1zm-1-6H4v4h16v-4zM5 18a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm14 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z\"/></svg>\n    </a>\n    <div class=\"mc-name\">Conveyor Belt</div>\n    <div class=\"mc-state\" ng-class=\"'st-'+msg.payload.conveyor.state\">{{msg.payload.conveyor.state | uppercase}}</div>\n  </div>\n\n  <div class=\"mc\">\n    <a class=\"sq\" ng-class=\"'sq-'+msg.payload.bending.state\" href=\"#!/Bending Machine\">\n      <svg viewBox=\"0 0 24 24\" fill=\"white\"><path d=\"M19.5 9.5A4.5 4.5 0 0 0 15 5H5v2h10a2.5 2.5 0 0 1 0 5H5v2h10a4.5 4.5 0 0 0 4.5-4.5zM5 19h14v-2H5v2z\"/></svg>\n    </a>\n    <div class=\"mc-name\">Bending Machine</div>\n    <div class=\"mc-state\" ng-class=\"'st-'+msg.payload.bending.state\">{{msg.payload.bending.state | uppercase}}</div>\n  </div>\n\n  <div class=\"mc\">\n    <a class=\"sq sq-offline\" href=\"#!/Palletising\">\n      <svg viewBox=\"0 0 24 24\" fill=\"white\"><path d=\"M21 8.5L12 3 3 8.5v7L12 21l9-5.5v-7zM12 5.31L19 9.5v5L12 18.69 5 14.5v-5L12 5.31z\"/></svg>\n    </a>\n    <div class=\"mc-name\">Palletising</div>\n    <div class=\"mc-state st-offline\">OFFLINE</div>\n  </div>\n\n  <div class=\"mc\">\n    <a class=\"sq sq-offline\" href=\"#!/CNC Machine\">\n      <svg viewBox=\"0 0 24 24\" fill=\"white\"><path d=\"M12 2a7 7 0 0 1 7 7c0 2.66-1.5 5-3.72 6.28L14 22H10l-1.28-6.72C6.5 14 5 11.66 5 9a7 7 0 0 1 7-7zm0 2a5 5 0 0 0-5 5c0 2.03 1.15 3.8 2.9 4.69L11 20h2l1.1-6.31A5.005 5.005 0 0 0 17 9a5 5 0 0 0-5-5z\"/></svg>\n    </a>\n    <div class=\"mc-name\">CNC Machine</div>\n    <div class=\"mc-state st-offline\">OFFLINE</div>\n  </div>\n\n</div>",
+    "storeOutMessages": true,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "x": 880,
+    "y": 200,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "tmpl_pall",
+    "type": "ui_template",
+    "z": "flow_overview",
+    "group": "grp_pall",
+    "name": "Palletising placeholder",
+    "order": 1,
+    "width": "12",
+    "height": "2",
+    "format": "<div style=\"padding:32px;color:#888;font-family:sans-serif;font-size:14px;text-align:center;\">No ESPs configured for Palletising Machine yet.</div>",
+    "storeOutMessages": false,
+    "fwdInMessages": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "x": 400,
+    "y": 460,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "tmpl_cnc",
+    "type": "ui_template",
+    "z": "flow_overview",
+    "group": "grp_cnc",
+    "name": "CNC placeholder",
+    "order": 1,
+    "width": "12",
+    "height": "2",
+    "format": "<div style=\"padding:32px;color:#888;font-family:sans-serif;font-size:14px;text-align:center;\">No ESPs configured for CNC Machine yet.</div>",
+    "storeOutMessages": false,
+    "fwdInMessages": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "x": 400,
+    "y": 520,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "mqtt_main_conv",
+    "type": "mqtt in",
+    "z": "flow_conveyor",
+    "name": "Main_controller/status",
+    "topic": "Main_controller/status",
+    "qos": "1",
+    "datatype": "json",
+    "broker": "mqtt_broker",
+    "x": 160,
+    "y": 80,
+    "wires": [
+      [
+        "fn_conv_parse"
+      ]
+    ]
+  },
+  {
+    "id": "fn_conv_parse",
+    "type": "function",
+    "z": "flow_conveyor",
+    "name": "Parse main controller",
+    "func": "const d = msg.payload;\n\nfunction fmtDur(ms) {\n    if (!ms && ms !== 0) return '00:00:00';\n    const s = Math.floor(ms / 1000);\n    const h = Math.floor(s / 3600);\n    const m = Math.floor((s % 3600) / 60);\n    const sc = s % 60;\n    return [h,m,sc].map(v=>String(v).padStart(2,'0')).join(':');\n}\n\nconst maintPct = d.maintenance_threshold_ms > 0\n    ? Math.min(100, (d.tracked_work_ms / d.maintenance_threshold_ms) * 100)\n    : 0;\n\n// Check IMU vibration maintenance from flow context (set by imu store fn)\nconst imuVibMaint = flow.get('imu_vib_maintenance') || false;\n\n// Override machine state if IMU requires maintenance\nconst effectiveMaint = d.maintenance_required || imuVibMaint;\nconst effectiveState = effectiveMaint ? 'maintenance' : d.machine_state;\n\n// Inject merged state back into payload for the detail template\nconst merged = Object.assign({}, d, {\n    maintenance_required: effectiveMaint,\n    machine_state: effectiveState,\n    imu_vibration_maintenance: imuVibMaint\n});\n\nreturn [\n    [{ payload: parseFloat(Number(d.current_ma || 0).toFixed(1)) }],\n    [{ payload: d.speed || 0 }],\n    [{ payload: parseFloat(Number(d.util_pct || 0).toFixed(1)) }],\n    [{ payload: parseFloat(maintPct.toFixed(1)) }],\n    [{ payload: effectiveMaint ? 'YES ⚠' : 'OK ✓' }],\n    [{ payload: fmtDur(d.work_ms) }],\n    [{ payload: fmtDur(d.tracked_work_ms) }],\n    [{ payload: merged }]\n];\n",
+    "outputs": 8,
+    "x": 410,
+    "y": 80,
+    "wires": [
+      [
+        "gauge_current",
+        "chart_current"
+      ],
+      [
+        "gauge_speed"
+      ],
+      [
+        "gauge_util"
+      ],
+      [
+        "gauge_maint_conv"
+      ],
+      [
+        "txt_maint_conv"
+      ],
+      [
+        "txt_worktime_conv"
+      ],
+      [
+        "txt_tracked_conv"
+      ],
+      [
+        "tmpl_esp32_detail",
+        "fn_maint_alert_conv"
+      ]
+    ]
+  },
+  {
+    "id": "gauge_current",
+    "type": "ui_gauge",
+    "z": "flow_conveyor",
+    "group": "grp_conv_metrics",
+    "order": 1,
+    "width": "3",
+    "height": "3",
+    "gtype": "gage",
+    "title": "Current",
+    "label": "mA",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 300,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#e60000"
+    ],
+    "seg1": "150",
+    "seg2": "250",
+    "x": 700,
+    "y": 20,
+    "wires": []
+  },
+  {
+    "id": "gauge_speed",
+    "type": "ui_gauge",
+    "z": "flow_conveyor",
+    "group": "grp_conv_metrics",
+    "order": 2,
+    "width": "3",
+    "height": "3",
+    "gtype": "gage",
+    "title": "Motor speed",
+    "label": "/255",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 255,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#e60000"
+    ],
+    "seg1": "100",
+    "seg2": "200",
+    "x": 700,
+    "y": 60,
+    "wires": []
+  },
+  {
+    "id": "gauge_util",
+    "type": "ui_gauge",
+    "z": "flow_conveyor",
+    "group": "grp_conv_metrics",
+    "order": 3,
+    "width": "3",
+    "height": "3",
+    "gtype": "gage",
+    "title": "Utilisation",
+    "label": "%",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 100,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#e60000"
+    ],
+    "seg1": "50",
+    "seg2": "80",
+    "x": 700,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "chart_current",
+    "type": "ui_chart",
+    "z": "flow_conveyor",
+    "group": "grp_conv_chart",
+    "order": 1,
+    "width": "6",
+    "height": "5",
+    "label": "Current (mA)",
+    "chartType": "line",
+    "legend": "false",
+    "xformat": "HH:mm:ss",
+    "interpolate": "linear",
+    "nodata": "No data yet",
+    "dot": false,
+    "ymin": "0",
+    "ymax": "",
+    "removeOlder": 5,
+    "removeOlderUnit": "60",
+    "removeOlderPoints": "",
+    "colors": [
+      "#1565c0",
+      "#aec6cf"
+    ],
+    "x": 700,
+    "y": 140,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "gauge_maint_conv",
+    "type": "ui_gauge",
+    "z": "flow_conveyor",
+    "group": "grp_conv_maint",
+    "order": 1,
+    "width": "6",
+    "height": "2",
+    "gtype": "tank",
+    "title": "Maintenance progress",
+    "label": "%",
+    "format": "{{value}}%",
+    "min": 0,
+    "max": 100,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#e60000"
+    ],
+    "seg1": "60",
+    "seg2": "85",
+    "x": 700,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "txt_maint_conv",
+    "type": "ui_text",
+    "z": "flow_conveyor",
+    "group": "grp_conv_maint",
+    "order": 2,
+    "width": "3",
+    "height": "1",
+    "label": "Maintenance",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "x": 700,
+    "y": 220,
+    "wires": []
+  },
+  {
+    "id": "txt_worktime_conv",
+    "type": "ui_text",
+    "z": "flow_conveyor",
+    "group": "grp_conv_maint",
+    "order": 3,
+    "width": "3",
+    "height": "1",
+    "label": "Total work time",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "x": 700,
+    "y": 260,
+    "wires": []
+  },
+  {
+    "id": "txt_tracked_conv",
+    "type": "ui_text",
+    "z": "flow_conveyor",
+    "group": "grp_conv_maint",
+    "order": 4,
+    "width": "3",
+    "height": "1",
+    "label": "Since last reset",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "x": 700,
+    "y": 300,
+    "wires": []
+  },
+  {
+    "id": "mqtt_imu_conv",
+    "type": "mqtt in",
+    "z": "flow_conveyor",
+    "name": "imu_controller/status",
+    "topic": "imu_controller/status",
+    "qos": "1",
+    "datatype": "json",
+    "broker": "mqtt_broker",
+    "x": 160,
+    "y": 420,
+    "wires": [
+      [
+        "tmpl_imu",
+        "fn_imu_charts"
+      ]
+    ]
+  },
+  {
+    "id": "tmpl_imu",
+    "type": "ui_template",
+    "z": "flow_conveyor",
+    "group": "grp_conv_imu",
+    "name": "IMU & Environment",
+    "order": 1,
+    "width": "6",
+    "height": "12",
+    "format": "<style>\n.imu{width:100%;border-collapse:collapse;font-size:13px;font-family:monospace}\n.imu td{padding:5px 10px;border-bottom:1px solid rgba(128,128,128,0.1)}\n.imu tr:last-child td{border-bottom:none}\n.imu .l{color:#888;font-family:sans-serif;width:55%}\n.imu .v{font-weight:600}\n.sec{font-size:10px;font-weight:600;letter-spacing:.08em;color:#aaa;font-family:sans-serif;padding:8px 10px 2px;text-transform:uppercase}\n.vib-ok{background:#d4edda;color:#155724;padding:2px 9px;border-radius:10px;font-size:11px;font-family:sans-serif}\n.vib-warn{background:#fff3cd;color:#856404;padding:2px 9px;border-radius:10px;font-size:11px;font-family:sans-serif}\n.vib-maint{background:#f8d7da;color:#721c24;padding:2px 9px;border-radius:10px;font-size:11px;font-family:sans-serif}\n</style>\n<table class=\"imu\">\n  <tr><td colspan=\"2\" class=\"sec\">Vibration</td></tr>\n  <tr><td class=\"l\">RMS linear accel</td><td class=\"v\">{{msg.payload.vibration.rms | number:3}} m/s²</td></tr>\n  <tr><td class=\"l\">Exceeding threshold</td><td class=\"v\">\n    <span ng-class=\"msg.payload.vibration.exceeding ? 'vib-warn' : 'vib-ok'\">\n      {{msg.payload.vibration.exceeding ? 'YES' : 'no'}}\n    </span>\n  </td></tr>\n  <tr><td class=\"l\">Vibration maintenance</td><td class=\"v\">\n    <span ng-class=\"msg.payload.vibration.maintenance_required ? 'vib-maint' : 'vib-ok'\">\n      {{msg.payload.vibration.maintenance_required ? 'REQUIRED ⚠' : 'OK ✓'}}\n    </span>\n  </td></tr>\n  <tr><td colspan=\"2\" class=\"sec\">Environment</td></tr>\n  <tr><td class=\"l\">Temperature</td><td class=\"v\">{{msg.payload.temp_c | number:1}} °C</td></tr>\n  <tr><td class=\"l\">Humidity</td><td class=\"v\">{{msg.payload.humidity_pct | number:1}} %</td></tr>\n  <tr><td class=\"l\">Pressure</td><td class=\"v\">{{msg.payload.pressure_hpa | number:1}} hPa</td></tr>\n  <tr><td class=\"l\">Altitude</td><td class=\"v\">{{msg.payload.alt_m | number:1}} m</td></tr>\n  <tr><td colspan=\"2\" class=\"sec\">Orientation</td></tr>\n  <tr><td class=\"l\">Yaw</td><td class=\"v\">{{msg.payload.orientation.yaw | number:1}}°</td></tr>\n  <tr><td class=\"l\">Pitch</td><td class=\"v\">{{msg.payload.orientation.pitch | number:1}}°</td></tr>\n  <tr><td class=\"l\">Roll</td><td class=\"v\">{{msg.payload.orientation.roll | number:1}}°</td></tr>\n  <tr><td colspan=\"2\" class=\"sec\">Acceleration (m/s²)</td></tr>\n  <tr><td class=\"l\">X / Y / Z</td><td class=\"v\">{{msg.payload.accel.x|number:2}} / {{msg.payload.accel.y|number:2}} / {{msg.payload.accel.z|number:2}}</td></tr>\n  <tr><td colspan=\"2\" class=\"sec\">Linear Accel (m/s²)</td></tr>\n  <tr><td class=\"l\">X / Y / Z</td><td class=\"v\">{{msg.payload.linear.x|number:2}} / {{msg.payload.linear.y|number:2}} / {{msg.payload.linear.z|number:2}}</td></tr>\n  <tr><td colspan=\"2\" class=\"sec\">Gyroscope (rad/s)</td></tr>\n  <tr><td class=\"l\">X / Y / Z</td><td class=\"v\">{{msg.payload.gyro.x|number:2}} / {{msg.payload.gyro.y|number:2}} / {{msg.payload.gyro.z|number:2}}</td></tr>\n  <tr><td colspan=\"2\" class=\"sec\">Gravity (m/s²)</td></tr>\n  <tr><td class=\"l\">X / Y / Z</td><td class=\"v\">{{msg.payload.gravity.x|number:2}} / {{msg.payload.gravity.y|number:2}} / {{msg.payload.gravity.z|number:2}}</td></tr>\n</table>",
+    "storeOutMessages": true,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "x": 400,
+    "y": 420,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "tmpl_esp32_detail",
+    "type": "ui_template",
+    "z": "flow_conveyor",
+    "group": "grp_conv_detail",
+    "name": "ESP32 Detail",
+    "order": 1,
+    "width": "12",
+    "height": "10",
+    "format": "<style>\n.dt{width:100%;border-collapse:collapse;font-size:13px;font-family:monospace}\n.dt td{padding:5px 10px;border-bottom:1px solid rgba(128,128,128,0.1)}\n.dt tr:last-child td{border-bottom:none}\n.dt .l{color:#888;font-family:sans-serif;width:55%}\n.dt .v{font-weight:600}\n.bw{background:#d4edda;color:#155724;padding:2px 9px;border-radius:10px;font-size:11px;font-family:sans-serif}\n.bi{background:#fff3cd;color:#856404;padding:2px 9px;border-radius:10px;font-size:11px;font-family:sans-serif}\n.bm{background:#f8d7da;color:#721c24;padding:2px 9px;border-radius:10px;font-size:11px;font-family:sans-serif}\n.sec{font-size:10px;font-weight:600;letter-spacing:.08em;color:#aaa;font-family:sans-serif;padding:8px 10px 2px;text-transform:uppercase}\n</style>\n<table class=\"dt\">\n<tr><td colspan=\"2\" class=\"sec\">Machine</td></tr>\n<tr><td class=\"l\">Uptime</td><td class=\"v\">{{msg.payload.ms}} ms</td></tr>\n<tr><td class=\"l\">Machine state</td><td class=\"v\">\n  <span ng-class=\"{'bw':msg.payload.machine_state==='working','bi':msg.payload.machine_state==='idle','bm':msg.payload.machine_state==='maintenance'}\">{{msg.payload.machine_state}}</span>\n</td></tr>\n<tr><td class=\"l\">Motor maintenance</td><td class=\"v\">\n  <span ng-class=\"msg.payload.maintenance_required && !msg.payload.imu_vibration_maintenance ? 'bm' : 'bw'\">\n    {{msg.payload.maintenance_required && !msg.payload.imu_vibration_maintenance ? 'YES ⚠' : 'OK ✓'}}\n  </span>\n</td></tr>\n<tr><td class=\"l\">Vibration maintenance</td><td class=\"v\">\n  <span ng-class=\"msg.payload.imu_vibration_maintenance ? 'bm' : 'bw'\">\n    {{msg.payload.imu_vibration_maintenance ? 'YES ⚠' : 'OK ✓'}}\n  </span>\n</td></tr>\n<tr><td colspan=\"2\" class=\"sec\">Motor</td></tr>\n<tr><td class=\"l\">Applied speed</td><td class=\"v\">{{msg.payload.speed}} / 255</td></tr>\n<tr><td class=\"l\">Requested speed</td><td class=\"v\">{{msg.payload.requested_speed}} / 255</td></tr>\n<tr><td class=\"l\">Current</td><td class=\"v\">{{msg.payload.current_ma | number:1}} mA</td></tr>\n<tr><td class=\"l\">ADC raw</td><td class=\"v\">{{msg.payload.adc_raw}}</td></tr>\n<tr><td class=\"l\">ADC filtered</td><td class=\"v\">{{msg.payload.adc_filtered}}</td></tr>\n<tr><td colspan=\"2\" class=\"sec\">Work time</td></tr>\n<tr><td class=\"l\">Total work time</td><td class=\"v\">{{msg.payload.work_ms}} ms</td></tr>\n<tr><td class=\"l\">Tracked work (since reset)</td><td class=\"v\">{{msg.payload.tracked_work_ms}} ms</td></tr>\n<tr><td class=\"l\">Maintenance threshold</td><td class=\"v\">{{msg.payload.maintenance_threshold_ms}} ms</td></tr>\n<tr><td class=\"l\">Utilisation</td><td class=\"v\">{{msg.payload.util_pct | number:2}} %</td></tr>\n</table>",
+    "storeOutMessages": true,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "x": 700,
+    "y": 340,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "fn_maint_alert_conv",
+    "type": "function",
+    "z": "flow_conveyor",
+    "name": "Alert on maintenance",
+    "func": "const d = msg.payload;\nconst prev = context.get('prev') || false;\nif (d.maintenance_required && !prev) {\n    context.set('prev', true);\n    msg.payload = '⚠ Conveyor Belt maintenance required!';\n    return msg;\n}\nif (!d.maintenance_required) context.set('prev', false);\nreturn null;",
+    "outputs": 1,
+    "x": 700,
+    "y": 380,
+    "wires": [
+      [
+        "toast_conv"
+      ]
+    ]
+  },
+  {
+    "id": "toast_conv",
+    "type": "ui_toast",
+    "z": "flow_conveyor",
+    "position": "top right",
+    "displayTime": "5",
+    "sendall": true,
+    "outputs": 0,
+    "ok": "OK",
+    "cancel": "",
+    "raw": false,
+    "name": "Maintenance alert",
+    "x": 920,
+    "y": 380,
+    "wires": []
+  },
+  {
+    "id": "btn_reset_conv",
+    "type": "ui_button",
+    "z": "flow_conveyor",
+    "group": "grp_conv_control",
+    "order": 1,
+    "width": "3",
+    "height": "1",
+    "passthru": false,
+    "label": "Reset maintenance",
+    "payload": "reset_maintenance",
+    "payloadType": "str",
+    "topic": "Main_controller/command",
+    "topicType": "str",
+    "x": 200,
+    "y": 520,
+    "wires": [
+      [
+        "mqtt_out_conv"
+      ]
+    ]
+  },
+  {
+    "id": "slider_speed_conv",
+    "type": "ui_slider",
+    "z": "flow_conveyor",
+    "group": "grp_conv_control",
+    "order": 2,
+    "width": "6",
+    "height": "1",
+    "label": "Motor speed",
+    "passthru": false,
+    "outs": "end",
+    "min": 0,
+    "max": 255,
+    "step": 1,
+    "x": 200,
+    "y": 560,
+    "wires": [
+      [
+        "fn_speed_conv"
+      ]
+    ]
+  },
+  {
+    "id": "fn_speed_conv",
+    "type": "function",
+    "z": "flow_conveyor",
+    "name": "Format speed cmd",
+    "func": "msg.payload = String(msg.payload);\nmsg.topic = 'Main_controller/command';\nreturn msg;",
+    "outputs": 1,
+    "x": 420,
+    "y": 560,
+    "wires": [
+      [
+        "mqtt_out_conv"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt_out_conv",
+    "type": "mqtt out",
+    "z": "flow_conveyor",
+    "name": "Main_controller/command",
+    "topic": "Main_controller/command",
+    "qos": "1",
+    "retain": "false",
+    "broker": "mqtt_broker",
+    "x": 660,
+    "y": 540,
+    "wires": []
+  },
+  {
+    "id": "mqtt_reset2_bend",
+    "type": "mqtt in",
+    "z": "flow_bending",
+    "name": "reset_button_2/status",
+    "topic": "reset_button_2/status",
+    "qos": "1",
+    "datatype": "json",
+    "broker": "mqtt_broker",
+    "x": 160,
+    "y": 80,
+    "wires": [
+      [
+        "fn_bend_parse"
+      ]
+    ]
+  },
+  {
+    "id": "fn_bend_parse",
+    "type": "function",
+    "z": "flow_bending",
+    "name": "Parse reset_button_2",
+    "func": "const d = msg.payload;\n\nfunction fmtDur(ms) {\n    if (!ms && ms !== 0) return '00:00:00';\n    const s = Math.floor(ms / 1000);\n    const h = Math.floor(s / 3600);\n    const m = Math.floor((s % 3600) / 60);\n    const sc = s % 60;\n    return [h,m,sc].map(v=>String(v).padStart(2,'0')).join(':');\n}\n\nconst maintPct = d.maintenance_threshold_ms > 0\n    ? Math.min(100, (d.tracked_work_ms / d.maintenance_threshold_ms) * 100)\n    : 0;\n\nreturn [\n    [{ payload: parseFloat(maintPct.toFixed(1)) }],\n    [{ payload: d.maintenance_required ? 'YES ⚠' : 'OK ✓' }],\n    [{ payload: fmtDur(d.tracked_work_ms) }],\n    [{ payload: d }]\n];\n",
+    "outputs": 4,
+    "x": 400,
+    "y": 80,
+    "wires": [
+      [
+        "gauge_maint_bend"
+      ],
+      [
+        "txt_maint_bend"
+      ],
+      [
+        "txt_tracked_bend"
+      ],
+      [
+        "tmpl_bend_detail",
+        "fn_bend_alert"
+      ]
+    ]
+  },
+  {
+    "id": "gauge_maint_bend",
+    "type": "ui_gauge",
+    "z": "flow_bending",
+    "group": "grp_bend_maint",
+    "order": 1,
+    "width": "6",
+    "height": "2",
+    "gtype": "tank",
+    "title": "Maintenance progress",
+    "label": "%",
+    "format": "{{value}}%",
+    "min": 0,
+    "max": 100,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#e60000"
+    ],
+    "seg1": "60",
+    "seg2": "85",
+    "x": 700,
+    "y": 40,
+    "wires": []
+  },
+  {
+    "id": "txt_maint_bend",
+    "type": "ui_text",
+    "z": "flow_bending",
+    "group": "grp_bend_maint",
+    "order": 2,
+    "width": "3",
+    "height": "1",
+    "label": "Maintenance",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "x": 700,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "txt_tracked_bend",
+    "type": "ui_text",
+    "z": "flow_bending",
+    "group": "grp_bend_maint",
+    "order": 3,
+    "width": "3",
+    "height": "1",
+    "label": "Since last reset",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "x": 700,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "tmpl_bend_detail",
+    "type": "ui_template",
+    "z": "flow_bending",
+    "group": "grp_bend_detail",
+    "name": "Bending Machine Detail",
+    "order": 1,
+    "width": "6",
+    "height": "6",
+    "format": "<style>\n.dt{width:100%;border-collapse:collapse;font-size:13px;font-family:monospace}\n.dt td{padding:5px 10px;border-bottom:1px solid rgba(128,128,128,0.1)}\n.dt tr:last-child td{border-bottom:none}\n.dt .l{color:#888;font-family:sans-serif;width:60%}\n.dt .v{font-weight:600}\n.bw{background:#d4edda;color:#155724;padding:2px 9px;border-radius:10px;font-size:11px;font-family:sans-serif}\n.bi{background:#fff3cd;color:#856404;padding:2px 9px;border-radius:10px;font-size:11px;font-family:sans-serif}\n.bm{background:#f8d7da;color:#721c24;padding:2px 9px;border-radius:10px;font-size:11px;font-family:sans-serif}\n</style>\n<table class=\"dt\">\n<tr><td class=\"l\">Machine state</td><td class=\"v\">\n  <span ng-class=\"{'bw':msg.payload.machine_state==='working','bi':msg.payload.machine_state==='idle','bm':msg.payload.machine_state==='maintenance'}\">{{msg.payload.machine_state}}</span>\n</td></tr>\n<tr><td class=\"l\">Tracked work (since reset)</td><td class=\"v\">{{msg.payload.tracked_work_ms}} ms</td></tr>\n<tr><td class=\"l\">Maintenance threshold</td><td class=\"v\">{{msg.payload.maintenance_threshold_ms}} ms</td></tr>\n<tr><td class=\"l\">Maintenance required</td><td class=\"v\">{{msg.payload.maintenance_required ? 'YES ⚠' : 'OK ✓'}}</td></tr>\n<tr><td class=\"l\">Source controller maintenance</td><td class=\"v\">{{msg.payload.source_controller_maintenance ? 'YES' : 'no'}}</td></tr>\n</table>",
+    "storeOutMessages": true,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "x": 700,
+    "y": 160,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "fn_bend_alert",
+    "type": "function",
+    "z": "flow_bending",
+    "name": "Alert on maintenance",
+    "func": "const d = msg.payload;\nconst prev = context.get('prev') || false;\nif (d.maintenance_required && !prev) {\n    context.set('prev', true);\n    msg.payload = '⚠ Bending Machine maintenance required!';\n    return msg;\n}\nif (!d.maintenance_required) context.set('prev', false);\nreturn null;",
+    "outputs": 1,
+    "x": 700,
+    "y": 200,
+    "wires": [
+      [
+        "toast_bend"
+      ]
+    ]
+  },
+  {
+    "id": "toast_bend",
+    "type": "ui_toast",
+    "z": "flow_bending",
+    "position": "top right",
+    "displayTime": "5",
+    "sendall": true,
+    "outputs": 0,
+    "ok": "OK",
+    "cancel": "",
+    "raw": false,
+    "name": "Bending maintenance alert",
+    "x": 920,
+    "y": 200,
+    "wires": []
+  },
+  {
+    "id": "btn_reset_bend",
+    "type": "ui_button",
+    "z": "flow_bending",
+    "group": "grp_bend_control",
+    "order": 1,
+    "width": "3",
+    "height": "1",
+    "passthru": false,
+    "label": "Reset maintenance",
+    "payload": "reset_maintenance",
+    "payloadType": "str",
+    "topic": "bending_machine/command",
+    "topicType": "str",
+    "x": 200,
+    "y": 300,
+    "wires": [
+      [
+        "mqtt_out_bend"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt_out_bend",
+    "type": "mqtt out",
+    "z": "flow_bending",
+    "name": "bending_machine/command",
+    "topic": "bending_machine/command",
+    "qos": "1",
+    "retain": "false",
+    "broker": "mqtt_broker",
+    "x": 460,
+    "y": 300,
+    "wires": []
+  },
+  {
+    "id": "grp_conv_accel",
+    "type": "ui_group",
+    "name": "Acceleration",
+    "tab": "ui_tab_conveyor",
+    "order": 7,
+    "disp": true,
+    "width": "12",
+    "collapse": false
+  },
+  {
+    "id": "chart_accel",
+    "type": "ui_chart",
+    "z": "flow_conveyor",
+    "group": "grp_conv_accel",
+    "order": 1,
+    "width": "6",
+    "height": "4",
+    "label": "Linear acceleration (m/s²)",
+    "chartType": "line",
+    "legend": "true",
+    "xformat": "HH:mm:ss",
+    "interpolate": "linear",
+    "nodata": "No data yet",
+    "dot": false,
+    "ymin": "",
+    "ymax": "",
+    "removeOlder": 2,
+    "removeOlderUnit": "60",
+    "removeOlderPoints": "",
+    "colors": [
+      "#e53935",
+      "#43a047",
+      "#1e88e5",
+      "#fb8c00",
+      "#8e24aa",
+      "#00acc1"
+    ],
+    "x": 700,
+    "y": 560,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "chart_vib",
+    "type": "ui_chart",
+    "z": "flow_conveyor",
+    "group": "grp_conv_accel",
+    "order": 2,
+    "width": "6",
+    "height": "4",
+    "label": "Vibration RMS (m/s²)",
+    "chartType": "line",
+    "legend": "true",
+    "xformat": "HH:mm:ss",
+    "interpolate": "linear",
+    "nodata": "No data yet",
+    "dot": false,
+    "ymin": "0",
+    "ymax": "",
+    "removeOlder": 2,
+    "removeOlderUnit": "60",
+    "removeOlderPoints": "",
+    "colors": [
+      "#e53935",
+      "#43a047",
+      "#1e88e5"
+    ],
+    "x": 700,
+    "y": 600,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "fn_imu_charts",
+    "type": "function",
+    "z": "flow_conveyor",
+    "name": "Format IMU for charts",
+    "func": "const d = msg.payload;\nconst t = Date.now();\n\nif (!d.linear || !d.vibration) return [null, null, null, null];\n\nreturn [\n    [{ topic: 'X', payload: parseFloat(Number(d.linear.x).toFixed(3)) }],\n    [{ topic: 'Y', payload: parseFloat(Number(d.linear.y).toFixed(3)) }],\n    [{ topic: 'Z', payload: parseFloat(Number(d.linear.z).toFixed(3)) }],\n    [{ topic: 'RMS', payload: parseFloat(Number(d.vibration.rms).toFixed(3)) }]\n];\n",
+    "outputs": 4,
+    "noerr": 0,
+    "x": 400,
+    "y": 580,
+    "wires": [
+      [
+        "chart_accel"
+      ],
+      [
+        "chart_accel"
+      ],
+      [
+        "chart_accel"
+      ],
+      [
+        "chart_vib"
+      ]
+    ]
+  }
+]
