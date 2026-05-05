@@ -1,6 +1,9 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include "../shared_network_config.h"
+#include "../shared_maintenance_config.h"
+
 // ---------------- MOTOR DRIVER (TB6612FNG) ----------------
 #define MOTOR_PWM_PIN      39   // Speed control (PWM)
 #define MOTOR_IN1_PIN      36   // Direction pin 1
@@ -35,5 +38,12 @@
 #define PWM_CHANNEL        0
 #define PWM_FREQ           20000   // 20 kHz
 #define PWM_RESOLUTION     8       // 8-bit (0–255)
+
+// ---------------- DEVICE TOPICS ----------------
+#define MQTT_CLIENT_NAME           MAIN_CONTROLLER_CLIENT_NAME
+#define MQTT_DEVICE_TOPIC          MAIN_CONTROLLER_DEVICE_TOPIC
+#define MQTT_STATE_TOPIC           MAIN_CONTROLLER_STATUS_TOPIC
+#define MQTT_COMMAND_TOPIC         MAIN_CONTROLLER_COMMAND_TOPIC
+#define MQTT_RESET_BUTTON_TOPIC    RESET_BUTTON_STATUS_TOPIC
 
 #endif
