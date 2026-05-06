@@ -206,12 +206,35 @@ void mqttCallback(char *topic, byte *payload, unsigned int length) {
 }
 
 // ----------------------------------------------------------------
+bool probeMqttTcp() {
+  WiFiClient probeClient;
+
+  Serial.print("Probing MQTT TCP ");
+  Serial.print(MQTT_SERVER);
+  Serial.print(":");
+  Serial.print(MQTT_PORT);
+  Serial.print(" ... ");
+
+  if (probeClient.connect(MQTT_SERVER, MQTT_PORT)) {
+    Serial.println("ok");
+    probeClient.stop();
+    return true;
+  }
+
+  Serial.println("failed");
+  probeClient.stop();
+  return false;
+}
+
+// ----------------------------------------------------------------
 void connectMqtt() {
   mqttClient.setServer(MQTT_SERVER, MQTT_PORT);
   mqttClient.setBufferSize(256);
   mqttClient.setCallback(mqttCallback);
 
   while (!mqttClient.connected()) {
+    probeMqttTcp();
+
     Serial.print("Connecting to MQTT... ");
 
     String clientId = String(MQTT_CLIENT_NAME) + "-" +

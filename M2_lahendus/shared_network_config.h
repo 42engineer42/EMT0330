@@ -2,10 +2,10 @@
 #define SHARED_NETWORK_CONFIG_H
  
 // ---------------- WIFI / MQTT ----------------
-#define WIFI_SSID                           "Tanker"
-#define WIFI_PASS                           "tank5678"
-//#define WIFI_SSID                         "TalTech"
-//#define WIFI_PASS                         ""
+//#define WIFI_SSID                           "Tanker"
+//#define WIFI_PASS                           "tank5678"
+#define WIFI_SSID                         "TalTech"
+#define WIFI_PASS                         ""
  
 #define MQTT_SERVER                         "193.40.245.72"
 #define MQTT_PORT                           1883
