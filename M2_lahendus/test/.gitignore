@@ -1,0 +1,10 @@
+# Arduino build output
+build/
+
+# Local editor settings
+.vscode/
+.claude/
+
+# Arduino CLI temporary files
+*.tmp
+*.temp

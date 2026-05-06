@@ -10,7 +10,7 @@
 #define BUTTON_DEBOUNCE_MS       50
 
 // ---------------- RGB LED ----------------
-#define RGB_LED_PIN              38
+#define RGB_LED_PIN              48
 #define RGB_LED_COUNT            1
 #define RGB_LED_BRIGHTNESS       80
 
